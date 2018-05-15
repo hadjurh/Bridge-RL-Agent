@@ -3,6 +3,7 @@ from game.player import Player
 from game.cards import Card
 from game.constants import Suits, Positions
 from tqdm import tqdm
+import sys
 
 # Options:
 # --method
@@ -14,12 +15,17 @@ from tqdm import tqdm
 # --print
 
 
-def main_generate_games(it):
+def main_generate_games(argv):
+    it = int(argv[0])
+
     file = open("no_trump" + str(it) + ".game", "w")
     observations = []
     actions = []
 
-    for _ in tqdm(range(it)):
+    for i in range(it):
+        if i % (it // 10) == 0:
+            print("Step:" + str(i))
+
         game = Game()
         # print("Declarer: ", game.contract.declarer, "---- HP: ", game.declarer_honor_points, "\n")
 
@@ -48,7 +54,7 @@ def main_generate_games(it):
 
 
 if __name__ == '__main__':
-    main_generate_games(10000)
+    main_generate_games(sys.argv[1:])
 
 # STEPS
 # Initialize game parameters (decks, agent players, computer players)
