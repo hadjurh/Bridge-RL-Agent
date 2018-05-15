@@ -1,3 +1,5 @@
 .idea
 *.game
 __pycache__
+err_batch
+out_batch

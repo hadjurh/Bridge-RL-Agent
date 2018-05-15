@@ -1,8 +1,5 @@
 from game.game import Game
-from game.player import Player
-from game.cards import Card
-from game.constants import Suits, Positions
-from tqdm import tqdm
+from game.constants import Positions
 import sys
 
 # Options:
@@ -23,8 +20,12 @@ def main_generate_games(argv):
     actions = []
 
     for i in range(it):
-        if i % (it // 10) == 0:
+        if i % 100000 == 0 and i != 0:
             print("Step:" + str(i))
+            file.write(''.join((str(observation) + "\n" + str(action) + "\n")
+                               for observation, action in zip(observations, actions)))
+            observations = []
+            actions = []
 
         game = Game()
         # print("Declarer: ", game.contract.declarer, "---- HP: ", game.declarer_honor_points, "\n")
@@ -48,9 +49,6 @@ def main_generate_games(argv):
             if game.done:
                 # print(game.scores, "\n")
                 break
-
-    file.write(''.join((str(observation) + "\n" + str(action) + "\n")
-                       for observation, action in zip(observations, actions)))
 
 
 if __name__ == '__main__':
