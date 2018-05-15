@@ -22,9 +22,9 @@ def main_generate_games(argv):
     for i in range(it):
         # Memory buffer
         if i % games_set_size == 0 and i != 0:
-            print("Step:" + str(i))
+            print("Step:" + str(i), file=sys.stderr)
 
-            file = open("no_trump" + str(games_set_size) +
+            file = open("no_trump_" + str(games_set_size) + "_" +
                         str(datetime.datetime.now())[0:10] + "_" +
                         str(datetime.datetime.now())[11:19].replace(":", "-") +
                         ".game", "w")
