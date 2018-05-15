@@ -1,7 +1,7 @@
 from game.game import Game
 from game.constants import Positions
+from utils.memory import write_file
 import sys
-import datetime
 
 # Options:
 # --method
@@ -13,26 +13,14 @@ import datetime
 # --print
 
 
-def main_generate_games(argv):
+def main_generate_games(argv, write=True):
     it = int(argv[0])
     games_set_size = int(argv[1])
     observations = []
     actions = []
+    scores = []
 
     for i in range(it):
-        # Memory buffer
-        if (i + 1) % games_set_size == 0:
-            print("Step:" + str(i), file=sys.stderr)
-
-            file = open("no_trump_" + str(games_set_size) + "_" +
-                        str(datetime.datetime.now())[0:10] + "_" +
-                        str(datetime.datetime.now())[11:19].replace(":", "-") +
-                        ".game", "w")
-            file.write(''.join((str(observation) + "\n" + str(action) + "\n")
-                               for observation, action in zip(observations, actions)))
-            observations = []
-            actions = []
-
         game = Game()
         # print("Declarer: ", game.contract.declarer, "---- HP: ", game.declarer_honor_points, "\n")
 
@@ -53,12 +41,19 @@ def main_generate_games(argv):
                 game.reset_trick()
 
             if game.done:
-                # print(game.scores, "\n")
+                scores.append([game.scores["NS"], game.scores["EW"]])
                 break
+
+        # Memory buffer
+        if (i + 1) % games_set_size == 0 and write:
+            write_file(i, games_set_size, observations, actions, scores)
+            observations = []
+            actions = []
+            scores = []
 
 
 if __name__ == '__main__':
-    main_generate_games(sys.argv[1:])
+    main_generate_games(sys.argv[1:], write=True)
 
 # STEPS
 # Initialize game parameters (decks, agent players, computer players)
