@@ -21,7 +21,7 @@ def main_generate_games(argv):
 
     for i in range(it):
         # Memory buffer
-        if i % games_set_size == 0 and i != 0:
+        if (i + 1) % games_set_size == 0:
             print("Step:" + str(i), file=sys.stderr)
 
             file = open("no_trump_" + str(games_set_size) + "_" +
