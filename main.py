@@ -1,6 +1,7 @@
 from game.game import Game
 from game.constants import Positions
 import sys
+import datetime
 
 # Options:
 # --method
@@ -14,14 +15,19 @@ import sys
 
 def main_generate_games(argv):
     it = int(argv[0])
-
-    file = open("no_trump" + str(it) + ".game", "w")
+    games_set_size = int(argv[1])
     observations = []
     actions = []
 
     for i in range(it):
-        if i % 100000 == 0 and i != 0:
+        # Memory buffer
+        if i % games_set_size == 0 and i != 0:
             print("Step:" + str(i))
+
+            file = open("no_trump" + str(games_set_size) +
+                        str(datetime.datetime.now())[0:10] + "_" +
+                        str(datetime.datetime.now())[11:19].replace(":", "-") +
+                        ".game", "w")
             file.write(''.join((str(observation) + "\n" + str(action) + "\n")
                                for observation, action in zip(observations, actions)))
             observations = []
