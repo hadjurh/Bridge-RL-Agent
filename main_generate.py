@@ -21,15 +21,18 @@ def main_generate_games(argv, write=True):
     scores = []
 
     for i in range(it):
-        game = Game()
-        # print("Declarer: ", game.contract.declarer, "---- HP: ", game.declarer_honor_points, "\n")
+        game = Game([Positions.North, Positions.South])  # Constrain: North or South is declarer
+        print("Declarer: ", game.contract.declarer, "---- HP: ", game.declarer_honor_points)
 
         while True:
             current_player = game.players[game.whose_turn_it_is_to_play.value]
-            current_card = current_player.play_card_random(game.dominant_suit)
 
             if game.whose_turn_it_is_to_play in [Positions.North, Positions.South]:
                 observations.append(game.observation(Positions.South))
+
+            current_card = current_player.play_card_random(game.dominant_suit)
+
+            if game.whose_turn_it_is_to_play in [Positions.North, Positions.South]:
                 actions.append(current_card.observation())
 
             game.play_a_card(current_card)

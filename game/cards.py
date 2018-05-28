@@ -44,6 +44,7 @@ def observation_to_card(observation):
 if __name__ == '__main__':
     for s in Suits:
         for v in values:
+            print(Card(s, v))
             assert Card(s, v) == observation_to_card(Card(s, v).observation())
 
     assert Card(Suits.Clubs, 2) < Card(Suits.Clubs, 3)

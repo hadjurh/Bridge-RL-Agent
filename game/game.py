@@ -1,4 +1,4 @@
-from game.cards import Card
+from game.cards import Card, observation_to_card
 from game.constants import Suits, Positions, values
 from game.player import Player
 from game.contract import Contract
@@ -6,7 +6,7 @@ from random import shuffle
 
 
 class Game(object):
-    def __init__(self):
+    def __init__(self, possible_declarers):
         """
         Set the game up ready to start
         """
@@ -21,7 +21,7 @@ class Game(object):
         self.done = False
         self.dominant_suit = Suits
 
-        while self.contract.declarer is None:
+        while self.contract.declarer is None or self.contract.declarer not in possible_declarers:
             self.deal()
             self.set_contract()
         self.whose_turn_it_is_to_play = Positions((self.contract.declarer.value + 1) % 4)
@@ -87,12 +87,32 @@ class Game(object):
         return [[cards.observation() for cards in tricks.values()] for tricks in self.trick_history]
 
     def observation(self, position):
-        return [self.players[position.value].list_hand(),
-                self.players[(position.value + 2) % 4].list_hand(),
+        return [simplify_hand(self.players[position.value].list_hand()),
+                simplify_hand(self.players[(position.value + 2) % 4].list_hand()),
                 self.trick_to_list(),
-                self.trick_history_to_list()]
+                simplify_trick_history(self.trick_history_to_list())]
+
+
+# The cards to keep explicitly on observations
+important_cards = [Card(Suits.Clubs, 11), Card(Suits.Clubs, 12), Card(Suits.Clubs, 13), Card(Suits.Clubs, 14),
+                   Card(Suits.Diamonds, 11), Card(Suits.Diamonds, 12),
+                   Card(Suits.Diamonds, 13), Card(Suits.Diamonds, 14),
+                   Card(Suits.Hearts, 11), Card(Suits.Hearts, 12), Card(Suits.Hearts, 13), Card(Suits.Hearts, 14),
+                   Card(Suits.Spades, 11), Card(Suits.Spades, 12), Card(Suits.Spades, 13), Card(Suits.Spades, 14)]
+important_cards_number = [card.observation() for card in important_cards]
+
+
+def simplify_hand(hand):
+    filtered_cards = [card_number for card_number in hand if card_number in important_cards_number]
+    number_of_other_cards = len(hand) - len(filtered_cards)
+    return filtered_cards + [-number_of_other_cards]
+
+
+def simplify_trick_history(trick_history):
+    return [1 if card_number in [cards for trick in trick_history for cards in trick]
+            else 0 for card_number in important_cards_number]
 
 
 if __name__ == '__main__':
-    game = Game()
+    game = Game([Positions.North, Positions.South])
     pass

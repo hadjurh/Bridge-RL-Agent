@@ -21,6 +21,7 @@ class Player(object):
                 points += card.value - honor_limit
         return points
 
+# TODO basic strategy for East and West
     def play_card_random(self, suit):
         possible_cards = [cards for cards in self.hand if cards.suit in suit]
         return self.hand.pop(self.hand.index(choice(self.hand))) if len(possible_cards) == 0 else \
