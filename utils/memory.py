@@ -5,11 +5,11 @@ import datetime
 def write_file(step, set_size, observation_list, action_list, score_list):
     print("Step:" + str(step + 1), file=sys.stderr)
 
-    file_game = open("no_trump_" + str(set_size) + "_" +
+    file_game = open("database/no_trump_" + str(set_size) + "_" +
                      str(datetime.datetime.now())[0:10] + "_" +
                      str(datetime.datetime.now())[11:19].replace(":", "-") +
                      ".game", "w")
-    file_score = open("no_trump_" + str(set_size) + "_" +
+    file_score = open("database/no_trump_" + str(set_size) + "_" +
                       str(datetime.datetime.now())[0:10] + "_" +
                       str(datetime.datetime.now())[11:19].replace(":", "-") +
                       ".score", "w")

@@ -18,7 +18,7 @@ def main_generate_games(argv, write=True):
     games_set_size = int(argv[1])
     observations = []
     actions = []
-    scores = []
+    scores = ["Contract, NS, EW"]
 
     for i in range(it):
         game = Game([Positions.North, Positions.South])  # Constrain: North or South is declarer
@@ -45,8 +45,7 @@ def main_generate_games(argv, write=True):
                 game.reset_trick()
 
             if game.done:
-                scores.append(game.contract.level)
-                scores.append([game.scores["NS"], game.scores["EW"]])
+                scores.append(str([game.contract.level, game.scores["NS"], game.scores["EW"]])[1:-1])
                 break
 
         # Memory buffer
