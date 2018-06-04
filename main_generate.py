@@ -1,4 +1,4 @@
-from game.game import Game
+from game.game import Game, play_card_random
 from game.constants import Positions
 from utils.memory import write_file
 import sys
@@ -22,7 +22,7 @@ def main_generate_games(argv, write=True):
 
     for i in range(it):
         game = Game([Positions.North, Positions.South])  # Constrain: North or South is declarer
-        print("Declarer: ", game.contract.declarer, "---- HP: ", game.declarer_honor_points)
+        # print("Declarer: ", game.contract.declarer, "---- HP: ", game.declarer_honor_points)
 
         while True:
             current_player = game.players[game.whose_turn_it_is_to_play.value]
@@ -30,7 +30,8 @@ def main_generate_games(argv, write=True):
             if game.whose_turn_it_is_to_play in [Positions.North, Positions.South]:
                 observations.append(game.observation(Positions.South))
 
-            current_card = current_player.play_card_random(game.dominant_suit)
+            basic_strategy = game.whose_turn_it_is_to_play in [Positions.West, Positions.East]
+            current_card = play_card_random(current_player, game.dominant_suit, game, basic_strategy)
 
             if game.whose_turn_it_is_to_play in [Positions.North, Positions.South]:
                 actions.append(current_card.observation())
@@ -44,6 +45,7 @@ def main_generate_games(argv, write=True):
                 game.reset_trick()
 
             if game.done:
+                scores.append(game.contract.level)
                 scores.append([game.scores["NS"], game.scores["EW"]])
                 break
 

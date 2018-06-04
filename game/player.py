@@ -1,7 +1,3 @@
-from random import choice
-from game.constants import Suits
-
-
 class Player(object):
     def __init__(self, position, hand):
         self.position = position
@@ -20,9 +16,3 @@ class Player(object):
             if card.value > honor_limit:
                 points += card.value - honor_limit
         return points
-
-# TODO basic strategy for East and West
-    def play_card_random(self, suit):
-        possible_cards = [cards for cards in self.hand if cards.suit in suit]
-        return self.hand.pop(self.hand.index(choice(self.hand))) if len(possible_cards) == 0 else \
-            self.hand.pop(self.hand.index(choice(possible_cards)))
