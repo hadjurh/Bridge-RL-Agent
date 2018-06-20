@@ -1,19 +1,18 @@
 import ast
 import json
+import sys
+import glob
 from brain.q_learning import QLearningTable
 
 
 def extract_fulfilled_contracts(file):
-    digits = "0123456789"
-    contract = 0
     fulfilled_contracts = {}
 
     with open("database/" + file + ".score") as scores:
         for num, line in enumerate(scores, 1):
-            if len(line) in [2, 3]:
-                contract = int(line)
-            else:
-                score = int(line[1:2]) if line[2] in digits else int(line[1])
+                line_list = ast.literal_eval(line)
+                contract = line_list[0]
+                score = line_list[1]
                 if score >= contract:
                     fulfilled_contracts[num // 2] = [contract, score]
 
@@ -52,18 +51,15 @@ def extract_fulfilled_games(file):
 
 
 if __name__ == '__main__':
-    fulfilled_games_dict = extract_fulfilled_games("test")
-
-    with open('database/fulfilled_games_dict.txt', 'w') as file:
-        file.write(json.dumps(fulfilled_games_dict))
-
-    json1_file = open("database/fulfilled_games_dict.txt")
-    json1_str = json1_file.read()
-    fulfilled_games_dict = json.loads(json1_str)
-
     # RL agent initialization
-    q_table = QLearningTable()
+    q_agent = QLearningTable()
     next_state = []
+
+    # Find files
+    path = sys.argv[1]
+    files = glob.glob('database/*.game')
+
+    fulfilled_games_dict = extract_fulfilled_games(sys.argv[1])
 
     for game_id in reversed(list(fulfilled_games_dict.keys())):
         game_id_list = ast.literal_eval(game_id)
@@ -71,6 +67,10 @@ if __name__ == '__main__':
         for index, play in enumerate(reversed(fulfilled_games_dict[game_id])):
             action = play[1]
             current_state = play[0]
-            # q_table.learn(current_state, action, next_state, reward)
-            print("Learning to play", action, "from", current_state, "to", next_state)
+
+            q_agent.learn(current_state, action, next_state, reward)
+
             next_state = current_state
+
+    with open('database/' + sys.argv[1] + '.json', 'w') as file:
+        file.write(json.dumps(q_agent.q_table))
