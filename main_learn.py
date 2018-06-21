@@ -2,6 +2,7 @@ import ast
 import json
 import sys
 import glob
+import datetime
 from brain.q_learning import QLearningTable
 
 
@@ -59,18 +60,22 @@ if __name__ == '__main__':
     path = sys.argv[1]
     files = glob.glob('database/*.game')
 
-    fulfilled_games_dict = extract_fulfilled_games(sys.argv[1])
+    for file in files:
+        file_name_no_extension = file[9:-5]
+        fulfilled_games_dict = extract_fulfilled_games(file_name_no_extension)
 
-    for game_id in reversed(list(fulfilled_games_dict.keys())):
-        game_id_list = ast.literal_eval(game_id)
-        reward = (game_id_list[2] - game_id_list[1] + 1)
-        for index, play in enumerate(reversed(fulfilled_games_dict[game_id])):
-            action = play[1]
-            current_state = play[0]
+        for game_id in reversed(list(fulfilled_games_dict.keys())):
+            game_id_list = ast.literal_eval(game_id)
+            reward = (game_id_list[2] - game_id_list[1] + 1)
+            for index, play in enumerate(reversed(fulfilled_games_dict[game_id])):
+                action = play[1]
+                current_state = play[0]
 
-            q_agent.learn(current_state, action, next_state, reward)
+                q_agent.learn(current_state, action, next_state, reward)
 
-            next_state = current_state
+                next_state = current_state
 
-    with open('database/' + sys.argv[1] + '.json', 'w') as file:
+    with open('database/' + str(len(files)) + "_" +
+              str(datetime.datetime.now())[0:10] + "_" +
+              str(datetime.datetime.now())[11:19].replace(":", "-") + '.json', 'w') as file:
         file.write(json.dumps(q_agent.q_table))

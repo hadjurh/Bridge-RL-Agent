@@ -2,3 +2,4 @@
 __pycache__
 err_batch
 out_batch
+.DS_Store
