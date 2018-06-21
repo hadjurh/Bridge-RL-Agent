@@ -3,6 +3,7 @@ import json
 import sys
 import glob
 import datetime
+import time
 from brain.q_learning import QLearningTable
 
 
@@ -52,6 +53,8 @@ def extract_fulfilled_games(file):
 
 
 if __name__ == '__main__':
+    start = time.time()
+
     # RL agent initialization
     q_agent = QLearningTable()
     next_state = []
@@ -79,3 +82,5 @@ if __name__ == '__main__':
               str(datetime.datetime.now())[0:10] + "_" +
               str(datetime.datetime.now())[11:19].replace(":", "-") + '.json', 'w') as file:
         file.write(json.dumps(q_agent.q_table))
+
+    print(round(time.time() - start, 3), "sec.")
