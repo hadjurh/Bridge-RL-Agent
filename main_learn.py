@@ -16,7 +16,7 @@ def extract_fulfilled_contracts(file):
                 contract = line_list[0]
                 score = line_list[1]
                 if score >= contract:
-                    fulfilled_contracts[num // 2] = [contract, score]
+                    fulfilled_contracts[num] = [contract, score]
 
     return fulfilled_contracts
 
