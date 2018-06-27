@@ -61,7 +61,7 @@ if __name__ == '__main__':
 
     # Find files
     path = sys.argv[1]
-    files = glob.glob('database/*.game')
+    files = glob.glob(path)
 
     for file in files:
         file_name_no_extension = file[9:-5]
