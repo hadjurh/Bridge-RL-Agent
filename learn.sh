@@ -6,6 +6,4 @@
 #SBATCH -o out_batch
 #SBATCH -e err_batch
 
-source venv/bin/activate
-
-python3 main_learn.py $1
+venv/bin/python main_learn.py $1
