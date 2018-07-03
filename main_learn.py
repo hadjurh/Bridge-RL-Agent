@@ -20,7 +20,7 @@ if __name__ == '__main__':
 
     for file in files:
         print(file)
-	file_name_no_extension = file[9:-5]
+        file_name_no_extension = file[9:-5]
 
         rewards = []
         with open("database/" + file_name_no_extension + ".score") as scores:
