@@ -19,7 +19,8 @@ if __name__ == '__main__':
     files = glob.glob("database/" + path)
 
     for file in files:
-        file_name_no_extension = file[9:-5]
+        print(file)
+	file_name_no_extension = file[9:-5]
 
         rewards = []
         with open("database/" + file_name_no_extension + ".score") as scores:
