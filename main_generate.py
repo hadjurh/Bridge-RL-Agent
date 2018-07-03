@@ -20,7 +20,8 @@ def main_generate_games(argv, write=True):
     actions = []
     scores = []
 
-    for i in range(it):
+    succeed_loops = 0
+    while succeed_loops <= it - 1:
         game = Game([Positions.North, Positions.South])  # Constrain: North or South is declarer
         # print("Declarer: ", game.contract.declarer, "---- HP: ", game.declarer_honor_points)
 
@@ -28,7 +29,7 @@ def main_generate_games(argv, write=True):
             current_player = game.players[game.whose_turn_it_is_to_play.value]
 
             if game.whose_turn_it_is_to_play in [Positions.North, Positions.South]:
-                observations.append(game.observation(Positions.South))
+                observations.append(game.observation(game.whose_turn_it_is_to_play))
 
             basic_strategy = game.whose_turn_it_is_to_play in [Positions.West, Positions.East]
             current_card = play_card_random(current_player, game.dominant_suit, game, basic_strategy)
@@ -45,12 +46,20 @@ def main_generate_games(argv, write=True):
                 game.reset_trick()
 
             if game.done:
-                scores.append(str([game.contract.level, game.scores["NS"], game.scores["EW"]]))
+                # Only save positive games
+                if game.scores["NS"] >= game.contract.level:
+                    succeed_loops += 1
+                    scores.append(str([game.contract.level, game.scores["NS"], game.scores["EW"]]))
+                    observations = observations[:-2]
+                    actions = actions[:-2]
+                else:
+                    observations = observations[:-26]
+                    actions = actions[:-26]
                 break
 
         # Memory buffer
-        if (i + 1) % games_set_size == 0 and write:
-            write_file(i, games_set_size, observations, actions, scores)
+        if succeed_loops % games_set_size == 0 and write and not scores == []:
+            write_file(succeed_loops, games_set_size, observations, actions, scores)
             observations = []
             actions = []
             scores = []

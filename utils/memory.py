@@ -3,7 +3,7 @@ import datetime
 
 
 def write_file(step, set_size, observation_list, action_list, score_list):
-    print("Step:" + str(step + 1), file=sys.stderr)
+    print("Step: " + str(step), file=sys.stderr)
 
     file_game = open("database/no_trump_" + str(set_size) + "_" +
                      str(datetime.datetime.now())[0:10] + "_" +
