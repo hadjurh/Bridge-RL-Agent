@@ -30,7 +30,7 @@ if __name__ == '__main__':
                                 nb_terms = merged_dictionary[key][sub_key][1]
                                 average = (current_dictionary[key][sub_key] / nb_terms +
                                            merged_dictionary[key][sub_key][0] /
-                                           (merged_dictionary[key][sub_key][1] + 1))
+                                           ((nb_terms + 1) / nb_terms))
                                 nb_terms += 1
                             merged_dictionary[key][sub_key] = [average, nb_terms]
                         else:
