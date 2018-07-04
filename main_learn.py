@@ -25,6 +25,8 @@ if __name__ == '__main__':
 
         index_of_underscores = [i for i, ltr in enumerate(name_of_memory_file) if ltr == "_"]
         total_number_of_games = int(name_of_memory_file[9:index_of_underscores[0]])
+    else:
+        print("No memory given: starting from no information")
 
     # RL agent initialization
     q_agent = QLearningTable(memory=memory)
