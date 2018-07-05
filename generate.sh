@@ -8,4 +8,4 @@
 
 source venv/bin/activate
 
-python3 main_generate.py $1 $2
+python3 main_generate.py $1 $2 $3

@@ -17,7 +17,7 @@ if __name__ == '__main__':
     update_count = 0
 
     for file in files:
-        print("Currently proccessing " + file)
+        print("Currently proccessing " + file, file=sys.stderr)
 
         index_of_underscores = [i for i, ltr in enumerate(file) if ltr == "_"]
         total_number_of_games += int(file[index_of_underscores[0] + 1:index_of_underscores[1]])
