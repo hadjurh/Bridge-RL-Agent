@@ -22,6 +22,9 @@ if __name__ == '__main__':
         print("Current file: " + file)
         file_name_no_extension = file[9:-5]
 
+        index_of_underscores = [i for i, ltr in enumerate(file_name_no_extension) if ltr == "_"]
+        number_of_games = int(file_name_no_extension[index_of_underscores[1] + 1:index_of_underscores[2]])
+
         rewards = []
         with open("database/" + file_name_no_extension + ".score") as scores:
             for line in scores:
@@ -37,7 +40,8 @@ if __name__ == '__main__':
                 else:
                         current_state = ast.literal_eval(line)
 
-        with open('database/learn_' + str(datetime.datetime.now())[0:10] + "_" +
+        with open('database/learn_' + str(number_of_games) + "_" +
+                  str(datetime.datetime.now())[0:10] + "_" +
                   str(datetime.datetime.now())[11:19].replace(":", "-") + '.json', 'w') as file:
             file.write(json.dumps(q_agent.q_table))
 
