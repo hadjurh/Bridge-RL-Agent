@@ -5,6 +5,8 @@ import copy
 import datetime
 
 if __name__ == '__main__':
+    total_number_of_games = 0
+
     path = sys.argv[1]
     files = glob.glob("database/" + path)
 
@@ -16,6 +18,10 @@ if __name__ == '__main__':
 
     for file in files:
         print("Currently proccessing " + file)
+
+        index_of_underscores = [i for i, ltr in enumerate(file) if ltr == "_"]
+        total_number_of_games += int(file[index_of_underscores[0] + 1:index_of_underscores[1]])
+
         with open(file) as json_file:
             current_dictionary = json.load(json_file)
 
@@ -49,6 +55,7 @@ if __name__ == '__main__':
                     merged_dictionary[key] = current_dictionary[key]
 
     print(update_count)
-    with open('database/merged_' + str(datetime.datetime.now())[0:10] + "_" +
+    with open('database/merged_' + str(total_number_of_games) + "_" +
+              str(datetime.datetime.now())[0:10] + "_" +
               str(datetime.datetime.now())[11:19].replace(":", "-") + '.json', 'w') as file:
         file.write(json.dumps(merged_dictionary))
