@@ -8,4 +8,4 @@
 
 source venv/bin/activate
 
-python3 merge_dictionaries.py $4
+python3 merge_dictionaries.py $1
