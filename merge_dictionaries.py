@@ -8,6 +8,8 @@ if __name__ == '__main__':
     path = sys.argv[1]
     files = glob.glob("database/" + path)
 
+    files = [f for f in files if f[9:15] != "merged"]
+
     merged_dictionary = {}
 
     update_count = 0
