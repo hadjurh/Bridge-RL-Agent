@@ -16,6 +16,7 @@ import sys
 def main_generate_games(argv, write=True):
     it = int(argv[0])
     games_set_size = int(argv[1])
+    unique_id = argv[2]
     observations = []
     actions = []
     scores = []
@@ -59,7 +60,7 @@ def main_generate_games(argv, write=True):
 
         # Memory buffer
         if succeed_loops % games_set_size == 0 and write and not scores == []:
-            write_file(succeed_loops, games_set_size, observations, actions, scores)
+            write_file(succeed_loops, games_set_size, observations, actions, scores, unique_id)
             observations = []
             actions = []
             scores = []
