@@ -14,8 +14,6 @@ if __name__ == '__main__':
 
     merged_dictionary = {}
 
-    update_count = 0
-
     for file in files:
         print("Currently proccessing " + file, file=sys.stderr)
 
@@ -35,8 +33,6 @@ if __name__ == '__main__':
                 if key in merged_dictionary.keys():
                     for sub_key in current_dictionary[key].keys():
                         if sub_key in merged_dictionary[key].keys():
-                            update_count += 1
-
                             if type(merged_dictionary[key][sub_key]) is float:
                                 average = (current_dictionary[key][sub_key] + merged_dictionary[key][sub_key]) / 2
                                 nb_terms = 2
@@ -53,9 +49,7 @@ if __name__ == '__main__':
                             merged_dictionary[key][sub_key] = current_dictionary[key][sub_key]
                 else:
                     merged_dictionary[key] = current_dictionary[key]
-
-    print(update_count)
-    with open('database/merged_' + str(total_number_of_games) + "_" +
-              str(datetime.datetime.now())[0:10] + "_" +
-              str(datetime.datetime.now())[11:19].replace(":", "-") + '.json', 'w') as file:
-        file.write(json.dumps(merged_dictionary))
+        with open('database/merged_' + str(total_number_of_games) + "_" +
+                  str(datetime.datetime.now())[0:10] + "_" +
+                  str(datetime.datetime.now())[11:19].replace(":", "-") + '.json', 'w') as file:
+            file.write(json.dumps(merged_dictionary))
