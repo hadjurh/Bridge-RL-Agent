@@ -89,18 +89,15 @@ class Game(object):
         return [[cards.observation() for cards in tricks.values()] for tricks in self.trick_history]
 
     def observation(self, position):
-        return [simplify_hand(self.players[position.value].list_hand()),
-                simplify_hand(self.players[(position.value + 2) % 4].list_hand()),
-                self.trick_to_list(),
+        return [self.trick_to_list(),
                 simplify_trick_history(self.trick_history_to_list())]
 
 
 # The cards to keep explicitly on observations
-important_cards = [Card(Suits.Clubs, 11), Card(Suits.Clubs, 12), Card(Suits.Clubs, 13), Card(Suits.Clubs, 14),
-                   Card(Suits.Diamonds, 11), Card(Suits.Diamonds, 12),
-                   Card(Suits.Diamonds, 13), Card(Suits.Diamonds, 14),
-                   Card(Suits.Hearts, 11), Card(Suits.Hearts, 12), Card(Suits.Hearts, 13), Card(Suits.Hearts, 14),
-                   Card(Suits.Spades, 11), Card(Suits.Spades, 12), Card(Suits.Spades, 13), Card(Suits.Spades, 14)]
+important_cards = [Card(Suits.Clubs, 12), Card(Suits.Clubs, 13), Card(Suits.Clubs, 14),
+                   Card(Suits.Diamonds, 12), Card(Suits.Diamonds, 13), Card(Suits.Diamonds, 14),
+                   Card(Suits.Hearts, 12), Card(Suits.Hearts, 13), Card(Suits.Hearts, 14),
+                   Card(Suits.Spades, 12), Card(Suits.Spades, 13), Card(Suits.Spades, 14)]
 important_cards_number = [card.observation() for card in important_cards]
 
 
@@ -111,8 +108,9 @@ def simplify_hand(hand):
 
 
 def simplify_trick_history(trick_history):
-    return [1 if card_number in [cards for trick in trick_history for cards in trick]
-            else 0 for card_number in important_cards_number]
+    bytes_array = [1 if card_number in [cards for trick in trick_history for cards in trick]
+                   else 0 for card_number in important_cards_number]
+    return sum(i * 2 ** (len(bytes_array) - index) for index, i in enumerate(bytes_array))
 
 
 def play_card_random(player, suit, current_game, basic_strategy=False):
