@@ -3,7 +3,7 @@ rm(list = ls())
 require("magrittr")
 require("ggplot2")
 
-scores <- read.csv2("Documents/PFE/Bridge_RL_Agent/no_trump_10000_2018-06-04_15-52-15.score", sep = ",")
+scores <- read.csv2("Documents/PFE/Bridge_RL_Agent/database/no_trump_1000_2018-07-09_17-18-55_1.game", sep = ",")
 
 # Plot
 g <- ggplot(data = scores, aes(Contract, NS)) + 

@@ -8,4 +8,4 @@
 
 source venv/bin/activate
 
-python3 agent_play.py $1 $2
+python3 agent_play.py $1 $2 $3
