@@ -1,8 +1,8 @@
 #!/bin/bash
 #SBATCH --gres=gpu:1
-#SBATCH --mem 8000
+#SBATCH --mem 15000
 #SBATCH -c 2
-#SBATCH -t 600
+#SBATCH -t 1000
 #SBATCH -o out_batch
 #SBATCH -e err_batch
 
