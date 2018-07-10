@@ -8,4 +8,4 @@
 
 source venv/bin/activate
 
-python3 main_learn.py $1
+python3 main_learn.py $1 $2

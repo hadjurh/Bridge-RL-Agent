@@ -15,6 +15,8 @@ if __name__ == '__main__':
     path = sys.argv[1]
     files = glob.glob("database/" + path)
 
+    unique_id = sys.argv[2]
+
     for file in files:
         # RL agent initialization
         q_agent = QLearningTable()
@@ -43,7 +45,8 @@ if __name__ == '__main__':
 
         with open('database/learn_' + str(number_of_games) + "_" +
                   str(datetime.datetime.now())[0:10] + "_" +
-                  str(datetime.datetime.now())[11:19].replace(":", "-") + '.json', 'w') as file_learn:
+                  str(datetime.datetime.now())[11:19].replace(":", "-") + "_" +
+                  unique_id + '.json', 'w') as file_learn:
             file_learn.write(json.dumps(q_agent.q_table))
 
         print(round(time.time() - start, 3), "sec.", file=sys.stderr)
