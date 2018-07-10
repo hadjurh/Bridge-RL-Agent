@@ -10,10 +10,6 @@ path = sys.argv[1]
 file = glob.glob("database/" + path)[0]
 
 nb_of_games = int(sys.argv[2])
-agent_game_won = 0
-random_game_won = 0
-recognized_states = []
-
 nb_samples = int(sys.argv[3])
 
 with open(file) as json_file:
@@ -22,6 +18,10 @@ with open(file) as json_file:
 known_states = brain.keys()
 
 for i in range(nb_samples):
+    agent_game_won = 0
+    random_game_won = 0
+    recognized_states = []
+
     for _ in range(nb_of_games):
         game = Game([Positions.North, Positions.South])
         game_copy = copy.deepcopy(game)
