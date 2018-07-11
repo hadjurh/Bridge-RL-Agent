@@ -3,13 +3,14 @@ import sys
 import glob
 import copy
 import datetime
+from random import shuffle
 
 if __name__ == '__main__':
     total_number_of_games = 0
 
     path = sys.argv[1]
     files = glob.glob("database/" + path)
-    files = [f for f in files if f[9:15] != "merged"]
+    files = shuffle([f for f in files if f[9:15] != "merged"])
 
     nb_of_outputs = int(sys.argv[2])
     nb_group = len(files) // nb_of_outputs
