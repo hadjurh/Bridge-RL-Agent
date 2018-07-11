@@ -52,13 +52,7 @@ if __name__ == '__main__':
                 else:
                     merged_dictionary[key] = current_dictionary[key]
 
-        if index % nb_group == 0 and not index == len(files) - 1 and not index == 0:
-            with open('database/merged_' + str(total_number_of_games) + "_" +
-                      str(datetime.datetime.now())[0:10] + "_" +
-                      str(datetime.datetime.now())[11:19].replace(":", "-") + '.json', 'w') as file:
-                file.write(json.dumps(merged_dictionary))
-
-    with open('database/merged_' + str(total_number_of_games) + "_" +
-              str(datetime.datetime.now())[0:10] + "_" +
-              str(datetime.datetime.now())[11:19].replace(":", "-") + '.json', 'w') as file:
-        file.write(json.dumps(merged_dictionary))
+        with open('database/merged_' + str(total_number_of_games) + "_" +
+                  str(datetime.datetime.now())[0:10] + "_" +
+                  str(datetime.datetime.now())[11:19].replace(":", "-") + '.json', 'w') as file:
+            file.write(json.dumps(merged_dictionary))
