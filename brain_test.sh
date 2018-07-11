@@ -1,7 +1,7 @@
 #!/bin/bash
 #SBATCH --gres=gpu:1
 #SBATCH -p gpucpuM
-#SBATCH --mem 8000
+#SBATCH --mem 100G
 #SBATCH -c 2
 #SBATCH -t 300
 #SBATCH -o out_batch
