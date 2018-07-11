@@ -13,6 +13,8 @@ if __name__ == '__main__':
     files = [f for f in files if f[9:15] != "merged"]
     shuffle(files)
 
+    unique_id = sys.argv[2]
+
     merged_dictionary = {}
 
     for index, file in enumerate(files):
@@ -53,5 +55,6 @@ if __name__ == '__main__':
 
         with open('database/merged_' + str(total_number_of_games) + "_" +
                   str(datetime.datetime.now())[0:10] + "_" +
-                  str(datetime.datetime.now())[11:19].replace(":", "-") + '.json', 'w') as file:
+                  str(datetime.datetime.now())[11:19].replace(":", "-") + "_" +
+                  unique_id + '.json', 'w') as file:
             file.write(json.dumps(merged_dictionary))
