@@ -10,10 +10,8 @@ if __name__ == '__main__':
 
     path = sys.argv[1]
     files = glob.glob("database/" + path)
-    files = shuffle([f for f in files if f[9:15] != "merged"])
-
-    nb_of_outputs = int(sys.argv[2])
-    nb_group = len(files) // nb_of_outputs
+    files = [f for f in files if f[9:15] != "merged"]
+    shuffle(files)
 
     merged_dictionary = {}
 
@@ -53,13 +51,7 @@ if __name__ == '__main__':
                 else:
                     merged_dictionary[key] = current_dictionary[key]
 
-        if index % nb_group == 0 and not index == len(files) - 1 and not index == 0:
-            with open('database/merged_' + str(total_number_of_games) + "_" +
-                      str(datetime.datetime.now())[0:10] + "_" +
-                      str(datetime.datetime.now())[11:19].replace(":", "-") + '.json', 'w') as file:
-                file.write(json.dumps(merged_dictionary))
-
-    with open('database/merged_' + str(total_number_of_games) + "_" +
-              str(datetime.datetime.now())[0:10] + "_" +
-              str(datetime.datetime.now())[11:19].replace(":", "-") + '.json', 'w') as file:
-        file.write(json.dumps(merged_dictionary))
+        with open('database/merged_' + str(total_number_of_games) + "_" +
+                  str(datetime.datetime.now())[0:10] + "_" +
+                  str(datetime.datetime.now())[11:19].replace(":", "-") + '.json', 'w') as file:
+            file.write(json.dumps(merged_dictionary))
