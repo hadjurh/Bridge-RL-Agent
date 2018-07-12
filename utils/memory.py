@@ -6,7 +6,7 @@ def write_file(step, set_size, observation_list, action_list, score_list, unique
     print("Step: " + str(step), file=sys.stderr)
 
     now = datetime.datetime.now()
-    time_str = str(now)[0:10] + "_" + str(now)[11:19].replace(":", "-")
+    time_str = str(now)[0:10] + "_" + str(now)[11:23].replace(":", "-").replace(".", "-")
 
     file_game = open("database/no_trump_" + str(set_size) + "_" +
                      time_str + "_" + unique_id +
