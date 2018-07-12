@@ -45,7 +45,7 @@ if __name__ == '__main__':
 
         with open('database/learn_' + str(number_of_games) + "_" +
                   str(datetime.datetime.now())[0:10] + "_" +
-                  str(datetime.datetime.now())[11:19].replace(":", "-") + "_" +
+                  str(datetime.datetime.now())[11:23].replace(":", "-").replace(".", "-") + "_" +
                   unique_id + '.json', 'w') as file_learn:
             file_learn.write(json.dumps(q_agent.q_table))
 
