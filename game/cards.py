@@ -28,6 +28,16 @@ class Card(object):
     def observation(self):
         return (self.value - 1) + self.suit.value * 13
 
+    def close_cards(self):
+        close_cards = {}
+        for distance in range(1, 13):
+            close_cards[distance] = []
+            if self.value - distance >= 2:
+                close_cards[distance].append(Card(self.suit, self.value - distance))
+            if self.value + distance <= 14:
+                close_cards[distance].append(Card(self.suit, self.value + distance))
+        return close_cards
+
 
 def observation_to_card(observation):
     """
@@ -42,6 +52,10 @@ def observation_to_card(observation):
 
 
 if __name__ == '__main__':
+    c = Card(Suits.Clubs, 5)
+    close_c = c.close_cards()
+    print(close_c)
+
     for s in Suits:
         for v in values:
             print(Card(s, v))
