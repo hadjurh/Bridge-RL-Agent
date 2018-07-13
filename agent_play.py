@@ -77,7 +77,7 @@ for file in files:
         index_of_underscores = [i for i, ltr in enumerate(file) if ltr == "_"]
         number_of_games_learned = int(file[index_of_underscores[0] + 1:index_of_underscores[1]])
 
-        perf = open('performances/performances.csv', 'a')
+        perf = open('performances/performances_2.csv', 'a')
         perf.write("\n" + str(number_of_games_learned) + " ; " +
                    str(nb_of_games) + " ; " +
                    str(agent_game_won) + " ; " +
