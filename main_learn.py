@@ -14,6 +14,8 @@ if __name__ == '__main__':
     path = sys.argv[1]
     files = glob.glob("database/" + path)
 
+    number_of_games = 0
+
     unique_id = sys.argv[2]
 
     # RL agent initialization
@@ -24,7 +26,7 @@ if __name__ == '__main__':
         file_name_no_extension = file[9:-5]
 
         index_of_underscores = [i for i, ltr in enumerate(file_name_no_extension) if ltr == "_"]
-        number_of_games = int(file_name_no_extension[index_of_underscores[1] + 1:index_of_underscores[2]])
+        number_of_games += int(file_name_no_extension[index_of_underscores[1] + 1:index_of_underscores[2]])
 
         rewards = []
         with open("database/" + file_name_no_extension + ".score") as scores:
@@ -54,10 +56,10 @@ if __name__ == '__main__':
         os.remove(str(file))
         os.remove("database/" + file_name_no_extension + ".score")
 
-    with open('database/learn_' + str(number_of_games) + "_" +
-              str(datetime.datetime.now())[0:10] + "_" +
-              str(datetime.datetime.now())[11:23].replace(":", "-").replace(".", "-") + "_" +
-              unique_id + '.json', 'w') as file_learn:
-        file_learn.write(json.dumps(q_agent.q_table))
+        with open('database/learn_' + str(number_of_games) + "_" +
+                  str(datetime.datetime.now())[0:10] + "_" +
+                  str(datetime.datetime.now())[11:23].replace(":", "-").replace(".", "-") + "_" +
+                  unique_id + '.json', 'w') as file_learn:
+            file_learn.write(json.dumps(q_agent.q_table))
 
-    print(round(time.time() - start, 3), "sec.", file=sys.stderr)
+        print(round(time.time() - start, 3), "sec.", file=sys.stderr)
