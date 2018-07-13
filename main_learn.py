@@ -51,6 +51,9 @@ if __name__ == '__main__':
 
         q_agent.learn(current_state, action, [], rewards[-1])
 
+        os.remove(str(file))
+        os.remove("database/" + file_name_no_extension + ".score")
+
     with open('database/learn_' + str(number_of_games) + "_" +
               str(datetime.datetime.now())[0:10] + "_" +
               str(datetime.datetime.now())[11:23].replace(":", "-").replace(".", "-") + "_" +
@@ -58,6 +61,3 @@ if __name__ == '__main__':
         file_learn.write(json.dumps(q_agent.q_table))
 
     print(round(time.time() - start, 3), "sec.", file=sys.stderr)
-
-    os.remove(str(file))
-    os.remove("database/" + file_name_no_extension + ".score")
