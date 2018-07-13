@@ -59,5 +59,5 @@ if __name__ == '__main__':
 
     print(round(time.time() - start, 3), "sec.", file=sys.stderr)
 
-    # os.remove(str(file))
-    # os.remove("database/" + file_name_no_extension + ".score")
+    os.remove(str(file))
+    os.remove("database/" + file_name_no_extension + ".score")
