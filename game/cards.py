@@ -5,7 +5,7 @@ class Card(object):
     def __init__(self, suit, value):
         """
         :param suit: [Clubs = 0, Diamonds = 1, Hearts = 2, Spades = 3]
-        :param value:
+        :param value: 2..14
         """
         self.suit = suit
         self.value = value

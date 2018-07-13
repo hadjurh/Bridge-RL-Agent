@@ -33,7 +33,7 @@ class QLearningTable(RL):
         estimate_optimal = 0 if list(self.q_table[str(s_)].keys()) == [] else max(self.q_table[str(s_)].values())
 
         learned_value = r * (gamma_close_states ** distance) + self.gamma * estimate_optimal
-        self.q_table[str(s)][str(a)] = (1 - self.lr) * current_value + self.lr * learned_value  # update
+        self.q_table[str(s)][str(a)] = round((1 - self.lr) * current_value + self.lr * learned_value, 4)  # update
 
         if close_cards_learning:
             close_cards = observation_to_card(a).close_cards()

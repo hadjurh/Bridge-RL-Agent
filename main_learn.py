@@ -7,7 +7,6 @@ import datetime
 import time
 from brain.q_learning import QLearningTable
 
-
 if __name__ == '__main__':
     start = time.time()
 
@@ -17,11 +16,10 @@ if __name__ == '__main__':
 
     unique_id = sys.argv[2]
 
-    for file in files:
-        # RL agent initialization
-        q_agent = QLearningTable()
-        next_state = []
+    # RL agent initialization
+    q_agent = QLearningTable()
 
+    for file in files:
         print("Current file: " + file, file=sys.stderr)
         file_name_no_extension = file[9:-5]
 
@@ -36,21 +34,30 @@ if __name__ == '__main__':
 
         with open(file) as games:
             for num, line in enumerate(games, 1):
-                if len(line) in [2, 3]:
-                    action = int(line)
-                    q_agent.learn(current_state, action, next_state, rewards[(num - 1) // 48])
-                    next_state = current_state
-                else:
+                if (num - 1) % 48 == 0 or (num - 2) % 48 == 0:
+                    if num > 2 and not num % 2 == 0:
+                        q_agent.learn(current_state, action, [], rewards[(num - 1) // 48])
+                    if len(line) in [2, 3]:
+                        action = int(line)
+                    else:
                         current_state = ast.literal_eval(line)
+                else:
+                    if len(line) in [2, 3]:
+                        action = int(line)
+                    else:
+                        next_state = ast.literal_eval(line)
+                        q_agent.learn(current_state, action, next_state, rewards[(num - 1) // 48])
+                        current_state = next_state
 
-        with open('database/learn_' + str(number_of_games) + "_" +
-                  str(datetime.datetime.now())[0:10] + "_" +
-                  str(datetime.datetime.now())[11:23].replace(":", "-").replace(".", "-") + "_" +
-                  unique_id + '.json', 'w') as file_learn:
-            file_learn.write(json.dumps(q_agent.q_table))
+        q_agent.learn(current_state, action, [], rewards[-1])
 
-        print(round(time.time() - start, 3), "sec.", file=sys.stderr)
+    with open('database/learn_' + str(number_of_games) + "_" +
+              str(datetime.datetime.now())[0:10] + "_" +
+              str(datetime.datetime.now())[11:23].replace(":", "-").replace(".", "-") + "_" +
+              unique_id + '.json', 'w') as file_learn:
+        file_learn.write(json.dumps(q_agent.q_table))
 
-        # os.remove(str(file))
-        # os.remove("database/" + file_name_no_extension + ".score")
+    print(round(time.time() - start, 3), "sec.", file=sys.stderr)
 
+    # os.remove(str(file))
+    # os.remove("database/" + file_name_no_extension + ".score")
