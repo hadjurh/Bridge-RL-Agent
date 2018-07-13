@@ -22,6 +22,7 @@ for file in files:
         agent_game_won = 0
         random_game_won = 0
         recognized_states = []
+        print(str(nb_of_games), "(" + str(i + 1) + ")", file=sys.stderr)
 
         for _ in range(nb_of_games):
             game = Game([Positions.North, Positions.South])
