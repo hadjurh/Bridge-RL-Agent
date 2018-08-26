@@ -90,7 +90,9 @@ class Game(object):
 
     def observation(self, position):
         return [self.trick_to_list(),
-                simplify_trick_history(self.trick_history_to_list())]
+                simplify_trick_history(self.trick_history_to_list()),
+                sorted(simplify_hand([card.observation() for card in self.players[0].hand] +
+                                     [card.observation() for card in self.players[2].hand])[0:-1])]
 
 
 # The cards to keep explicitly on observations
@@ -100,9 +102,15 @@ important_cards = [Card(Suits.Clubs, 12), Card(Suits.Clubs, 13), Card(Suits.Club
                    Card(Suits.Spades, 12), Card(Suits.Spades, 13), Card(Suits.Spades, 14)]
 important_cards_number = [card.observation() for card in important_cards]
 
+aces_and_kings = [Card(Suits.Clubs, 13), Card(Suits.Clubs, 14),
+                  Card(Suits.Diamonds, 13), Card(Suits.Diamonds, 14),
+                  Card(Suits.Hearts, 13), Card(Suits.Hearts, 14),
+                  Card(Suits.Spades, 13), Card(Suits.Spades, 14)]
+aces_and_kings_number = [card.observation() for card in aces_and_kings]
+
 
 def simplify_hand(hand):
-    filtered_cards = [card_number for card_number in hand if card_number in important_cards_number]
+    filtered_cards = [card_number for card_number in hand if card_number in aces_and_kings_number]
     number_of_other_cards = len(hand) - len(filtered_cards)
     return filtered_cards + [-number_of_other_cards]
 
@@ -110,7 +118,7 @@ def simplify_hand(hand):
 def simplify_trick_history(trick_history):
     bytes_array = [1 if card_number in [cards for trick in trick_history for cards in trick]
                    else 0 for card_number in important_cards_number]
-    return sum(i * 2 ** (len(bytes_array) - index) for index, i in enumerate(bytes_array))
+    return sum(i * 2 ** (len(bytes_array) - index - 1) for index, i in enumerate(bytes_array))
 
 
 def play_card_random(player, suit, current_game, basic_strategy=False):

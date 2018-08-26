@@ -6,3 +6,4 @@ out_batch
 *.png
 .RData
 .Rhistory
+venv

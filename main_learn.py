@@ -5,6 +5,7 @@ import os
 import glob
 import datetime
 import time
+from random import shuffle
 from brain.q_learning import QLearningTable
 
 if __name__ == '__main__':
@@ -13,6 +14,7 @@ if __name__ == '__main__':
     # Find files
     path = sys.argv[1]
     files = glob.glob("database/" + path)
+    shuffle(files)
 
     number_of_games = 0
 
@@ -53,8 +55,8 @@ if __name__ == '__main__':
 
         q_agent.learn(current_state, action, [], rewards[-1])
 
-        os.remove(str(file))
-        os.remove("database/" + file_name_no_extension + ".score")
+        # os.remove(str(file))
+        # os.remove("database/" + file_name_no_extension + ".score")
 
         with open('database/learn_' + str(number_of_games) + "_" +
                   str(datetime.datetime.now())[0:10] + "_" +
