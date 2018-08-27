@@ -90,9 +90,9 @@ class Game(object):
 
     def observation(self, position):
         return [self.trick_to_list(),
-                simplify_trick_history(self.trick_history_to_list()),
-                sorted(simplify_hand([card.observation() for card in self.players[0].hand] +
-                                     [card.observation() for card in self.players[2].hand])[0:-1])]
+                simplify_trick_history(self.trick_history_to_list())]
+                # sorted(simplify_hand([card.observation() for card in self.players[0].hand] +
+                #                      [card.observation() for card in self.players[2].hand])[0:-1])]
 
 
 # The cards to keep explicitly on observations
