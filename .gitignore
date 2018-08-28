@@ -7,3 +7,4 @@ out_batch
 .RData
 .Rhistory
 venv
+venv/*
