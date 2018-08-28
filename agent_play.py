@@ -7,7 +7,7 @@ import json
 import glob
 
 path = sys.argv[1]
-files = glob.glob("database_sarsa/" + path)
+files = glob.glob("database-sarsa/" + path)
 
 nb_of_games = int(sys.argv[2])
 nb_samples = int(sys.argv[3])
