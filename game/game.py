@@ -156,7 +156,7 @@ def play_card_random(player, suit, current_game, basic_strategy=False):
                     else:
                         return player.hand.pop(player.hand.index(max(possible_cards)))
                 else:
-                    return player.hand.pop(player.hand.index(choice(possible_cards)))
+                    return player.hand.pop(player.hand.index(choice(possible_cards)))  # TODO choose finesse often
             else:
                 return player.hand.pop(player.hand.index(min(possible_cards)))
         else:

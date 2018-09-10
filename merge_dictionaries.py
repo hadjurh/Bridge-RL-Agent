@@ -17,6 +17,8 @@ if __name__ == '__main__':
 
     merged_dictionary = {}
 
+    # TODO gaussian process: well defined distance functions
+
     for index, file in enumerate(files):
         print("Currently proccessing " + file, file=sys.stderr)
 
@@ -39,7 +41,7 @@ if __name__ == '__main__':
                             if type(merged_dictionary[key][sub_key]) is float:
                                 average = (current_dictionary[key][sub_key] + merged_dictionary[key][sub_key]) / 2
                                 nb_terms = 2
-
+                            # TODO use max
                             elif type(merged_dictionary[key][sub_key]) is list:
                                 nb_terms = merged_dictionary[key][sub_key][1]
                                 average = (current_dictionary[key][sub_key] / nb_terms +
