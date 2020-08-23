@@ -16,3 +16,8 @@ class Player(object):
             if card.value > honor_limit:
                 points += card.value - honor_limit
         return points
+
+    def play_card(self, card):
+        assert card in self.hand
+        self.hand.pop(self.hand.index(card))
+        return card

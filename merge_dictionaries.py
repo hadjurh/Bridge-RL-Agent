@@ -9,7 +9,7 @@ if __name__ == '__main__':
     total_number_of_games = 0
 
     path = sys.argv[1]
-    files = glob.glob("database/" + path)
+    files = glob.glob("database-" + path)
     files = [f for f in files if f[9:15] != "merged"]
     shuffle(files)
 
@@ -38,24 +38,15 @@ if __name__ == '__main__':
                 if key in merged_dictionary.keys():
                     for sub_key in current_dictionary[key].keys():
                         if sub_key in merged_dictionary[key].keys():
-                            if type(merged_dictionary[key][sub_key]) is float:
-                                average = (current_dictionary[key][sub_key] + merged_dictionary[key][sub_key]) / 2
-                                nb_terms = 2
-                            # TODO use max
-                            elif type(merged_dictionary[key][sub_key]) is list:
-                                nb_terms = merged_dictionary[key][sub_key][1]
-                                average = (current_dictionary[key][sub_key] / nb_terms +
-                                           merged_dictionary[key][sub_key][0] /
-                                           ((nb_terms + 1) / nb_terms))
-                                nb_terms += 1
-
-                            merged_dictionary[key][sub_key] = [average, nb_terms]
+                            merged_dictionary[key][sub_key] = max(current_dictionary[key][sub_key],
+                                                                  merged_dictionary[key][sub_key])
                         else:
                             merged_dictionary[key][sub_key] = current_dictionary[key][sub_key]
                 else:
                     merged_dictionary[key] = current_dictionary[key]
 
-        with open('database/merged_' + str(total_number_of_games) + "_" +
+        with open('database-' + sys.argv[1][:sys.argv[1].find('/')] + '/merged_' +
+                  str(total_number_of_games) + "_" +
                   str(datetime.datetime.now())[0:10] + "_" +
                   str(datetime.datetime.now())[11:19].replace(":", "-") + "_" +
                   unique_id + '.json', 'w') as file:

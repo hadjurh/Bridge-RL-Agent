@@ -40,3 +40,27 @@ class QLearningTable(RL):
             for distance in [1, 2, 3]:
                 for card in close_cards[distance]:
                     self.learn(s, card.observation(), s_, r, close_cards_learning=False, distance=distance)
+
+
+# on-policy
+class SarsaTable(RL):
+    def __init__(self, learning_rate=0.1, reward_decay=0.9, e_greedy=0.9, memory=None):
+        super(SarsaTable, self).__init__(learning_rate, reward_decay, e_greedy, memory)
+
+    def learn(self, s, a, r, s_, a_, close_cards_learning=True, distance=0):
+        gamma_close_states = 0.8
+
+        self.check_state_exist(s_)
+        self.check_state_exist(s)
+
+        current_value = self.q_table[str(s)][str(a)] if a in self.q_table[str(s)].keys() else 0
+        next_value = 0 if str(a_) not in list(self.q_table[str(s_)].keys()) else self.q_table[str(s_)][str(a_)]
+
+        learned_value = r * (gamma_close_states ** distance) + self.gamma * next_value
+        self.q_table[str(s)][str(a)] = round((1 - self.lr) * current_value + self.lr * learned_value, 4)  # update
+
+        if close_cards_learning:
+            close_cards = observation_to_card(a).close_cards()
+            for distance in [1, 2, 3]:
+                for card in close_cards[distance]:
+                    self.learn(s, card.observation(), r, s_, a_, close_cards_learning=False, distance=distance)

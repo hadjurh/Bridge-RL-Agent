@@ -6,3 +6,8 @@ out_batch
 *.png
 .RData
 .Rhistory
+venv
+database
+data_from_first_observation_style
+database-sarsa
+database-qlearning

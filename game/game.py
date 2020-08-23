@@ -7,9 +7,7 @@ from random import shuffle, choice
 
 class Game(object):
     def __init__(self, possible_declarers):
-        """
-        Set the game up ready to start
-        """
+        """ Set the game up ready to start """
         self.players = [Player(position, []) for position in Positions]
         self.deck = [Card(suit, value) for suit in Suits for value in values]
         self.number_of_played_cards = 0
@@ -50,16 +48,8 @@ class Game(object):
             self.declarer_honor_points = ew_honor_points
 
     def get_winner(self):
-        # card_values = [card.value for card in self.trick.values()]
-        # number_of_max = card_values.count(max(card_values))
-        trick_with_cards_that_count = \
-            {k: self.trick[k] for k in self.trick.keys()
-             if type(self.trick[k]) == Card and self.trick[k].suit in self.dominant_suit}
-        # if number_of_max > 1:
-        #     print("Start: ", Positions((self.whose_turn_it_is_to_play.value + 1) % 4))
-        #     print(self.dominant_suit)
-        #     print([str(pos) + " " + str(card) for card, pos in zip(self.trick.values(), self.trick.keys())])
-        #     print("Winner: ", max(trick_with_cards_that_count, key=trick_with_cards_that_count.get), "\n")
+        trick_with_cards_that_count = {k: self.trick[k] for k in self.trick.keys()
+                                       if type(self.trick[k]) == Card and self.trick[k].suit in self.dominant_suit}
         return max(trick_with_cards_that_count, key=trick_with_cards_that_count.get)
 
     def play_a_card(self, card):
@@ -81,6 +71,7 @@ class Game(object):
 
     def reset_trick(self):
         self.trick = {position: None for position in Positions}
+        self.dominant_suit = Suits
 
     def trick_to_list(self):
         return [cards.observation() if cards is not None else 0 for cards in self.trick.values()]
@@ -89,6 +80,15 @@ class Game(object):
         return [[cards.observation() for cards in tricks.values()] for tricks in self.trick_history]
 
     def observation(self, position):
+        """
+        Known hands:
+         [self.trick_to_list(), simplify_trick_history(self.trick_history_to_list()),
+                sorted(simplify_hand([card.observation() for card in self.players[0].hand] +
+                [card.observation() for card in self.players[2].hand])[0:-1])]
+        Unknown hands:
+         [self.trick_to_list(),
+                simplify_trick_history(self.trick_history_to_list())]
+         """
         return [self.trick_to_list(),
                 simplify_trick_history(self.trick_history_to_list())]
 
@@ -100,9 +100,15 @@ important_cards = [Card(Suits.Clubs, 12), Card(Suits.Clubs, 13), Card(Suits.Club
                    Card(Suits.Spades, 12), Card(Suits.Spades, 13), Card(Suits.Spades, 14)]
 important_cards_number = [card.observation() for card in important_cards]
 
+aces_and_kings = [Card(Suits.Clubs, 13), Card(Suits.Clubs, 14),
+                  Card(Suits.Diamonds, 13), Card(Suits.Diamonds, 14),
+                  Card(Suits.Hearts, 13), Card(Suits.Hearts, 14),
+                  Card(Suits.Spades, 13), Card(Suits.Spades, 14)]
+aces_and_kings_number = [card.observation() for card in aces_and_kings]
+
 
 def simplify_hand(hand):
-    filtered_cards = [card_number for card_number in hand if card_number in important_cards_number]
+    filtered_cards = [card_number for card_number in hand if card_number in aces_and_kings_number]
     number_of_other_cards = len(hand) - len(filtered_cards)
     return filtered_cards + [-number_of_other_cards]
 
@@ -110,7 +116,7 @@ def simplify_hand(hand):
 def simplify_trick_history(trick_history):
     bytes_array = [1 if card_number in [cards for trick in trick_history for cards in trick]
                    else 0 for card_number in important_cards_number]
-    return sum(i * 2 ** (len(bytes_array) - index) for index, i in enumerate(bytes_array))
+    return sum(i * 2 ** (len(bytes_array) - index - 1) for index, i in enumerate(bytes_array))
 
 
 def play_card_random(player, suit, current_game, basic_strategy=False):
