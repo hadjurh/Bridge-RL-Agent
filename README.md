@@ -1,6 +1,6 @@
 # Bridge-RL-Agent
 
-Hugo Hadjur - Ishii Lab - 10/2017 to 09/2018
+Hugo Hadjur (Master's Thesis) - Ishii Lab - 10/2017 to 09/2018
 
 ## How to use the current version
 
